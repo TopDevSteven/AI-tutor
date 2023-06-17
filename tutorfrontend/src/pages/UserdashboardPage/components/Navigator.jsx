@@ -20,7 +20,7 @@ import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 
 const categories = [
   {
-    id: 'Build',
+    id: 'Working Area',
     children: [
       { id: 'AI Lesson App', icon: <DnsRoundedIcon /> },
       {
@@ -75,7 +75,7 @@ export default function Navigator(props) {
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText>Project Overview</ListItemText>
+          <ListItemText>Overview</ListItemText>
         </ListItem>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#101F33' }}>

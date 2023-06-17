@@ -1,7 +1,7 @@
 import React from "react";
 import Chatarea from "./ChatComponent/Chatarea";
 
-const MainAppPage = () => {
+const CodeApp = () => {
     return (
         <>
             <Chatarea />
@@ -9,4 +9,4 @@ const MainAppPage = () => {
     )
 }
 
-export default MainAppPage;
+export default CodeApp;

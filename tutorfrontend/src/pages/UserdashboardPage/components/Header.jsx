@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
@@ -18,7 +19,7 @@ import Typography from '@mui/material/Typography';
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 function Header(props) {
-  const { onDrawerToggle } = props;
+  const { onDrawerToggle, activeTab, onTabChange } = props;
 
   return (
     <React.Fragment>
@@ -45,7 +46,7 @@ function Header(props) {
             </Grid>
             <Grid item>
               <IconButton color="inherit" sx={{ p: 0.5 }}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+                <Avatar src="./1.jpg" alt="My Avatar" />
               </IconButton>
             </Grid>
           </Grid>
@@ -86,7 +87,7 @@ function Header(props) {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-        <Tabs value={0} textColor="inherit">
+        <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
           <Tab label="Code" />
           <Tab label="Presentation" />
           <Tab label="Blog Content" />
@@ -99,6 +100,8 @@ function Header(props) {
 
 Header.propTypes = {
   onDrawerToggle: PropTypes.func.isRequired,
+  onTabChange: PropTypes.func.isRequired,
+  activeTab: PropTypes.number.isRequired
 };
 
 export default Header;

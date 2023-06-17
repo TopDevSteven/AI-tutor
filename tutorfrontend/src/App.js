@@ -1,6 +1,5 @@
 import './App.css';
-import Chatarea from './apps/MainAppPage/ChatComponent/Chatarea';
-import UserDashboard from './apps/UserDashboardPage/UserDashboard';
+import UserDashboard from './pages/UserdashboardPage/UserDashboard';
 
 function App() {
   return (

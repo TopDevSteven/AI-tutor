@@ -9,7 +9,7 @@ import Link from '@mui/material/Link';
 import Navigator from './components/Navigator';
 import Content from './components/Content';
 import Header from './components/Header';
-import MainAppPage from '../MainAppPage/MainAppPage';
+import CodeApp from '../../components/CodeGenerterComponent/CodeApp';
 
 function Copyright() {
   return (
@@ -171,6 +171,11 @@ const drawerWidth = 256;
 export default function UserDashboard() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
+  const [activeTab, setActiveTab] = React.useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -192,16 +197,18 @@ export default function UserDashboard() {
               onClose={handleDrawerToggle}
             />
           )}
-
           <Navigator
             PaperProps={{ style: { width: drawerWidth } }}
             sx={{ display: { sm: 'block', xs: 'none' } }}
           />
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header onDrawerToggle={handleDrawerToggle} />
+          <Header onDrawerToggle={handleDrawerToggle} activeTab={activeTab} onTabChange={handleTabChange}/>
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            <MainAppPage />
+            {activeTab == 0 && <CodeApp />}
+            {activeTab == 1 && <p>Presentation</p>}
+            {activeTab == 2 && <p>Blog content</p>}
+            {activeTab == 3 && <p>images</p>}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />
