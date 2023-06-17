@@ -1,10 +1,13 @@
 import './App.css';
-import Chatarea from './components/MainAppPage/ChatComponent.jsx/Chatarea';
+import Chatarea from './apps/MainAppPage/ChatComponent/Chatarea';
+import UserDashboard from './apps/UserDashboardPage/UserDashboard';
 
 function App() {
   return (
     <div>
-      <Chatarea />
+      {/* <Chatarea /> */}
+
+      <UserDashboard />
     </div>
   );
 }

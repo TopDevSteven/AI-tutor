@@ -69,7 +69,7 @@ const Chatarea = () => {
 
   return (
     <div className="chatarea">
-      <Typography variant="h2" className="title">Chatbot</Typography>
+      <Typography variant="h2" className="title"></Typography>
       <div className="messages">
         {messages.map((message, index) => (
           <div key={index} className={`message ${message.user === 'Bot' ? 'bot-message' : 'user-message'}`}>

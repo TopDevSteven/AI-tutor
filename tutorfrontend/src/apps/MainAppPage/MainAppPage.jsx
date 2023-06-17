@@ -1,11 +1,10 @@
 import React from "react";
-import Chatarea from "./ChatComponent.jsx/Chatarea";
+import Chatarea from "./ChatComponent/Chatarea";
 
 const MainAppPage = () => {
     return (
         <>
             <Chatarea />
-            <p>hello</p>
         </>
     )
 }
