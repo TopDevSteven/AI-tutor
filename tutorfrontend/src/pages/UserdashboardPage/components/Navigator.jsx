@@ -11,22 +11,21 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import PublicIcon from '@mui/icons-material/Public';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
+import PropTypes from 'prop-types';
 
 const categories = [
   {
     id: 'Working Area',
     children: [
-      { id: 'AI Lesson App', icon: <DnsRoundedIcon /> },
+      { id: 'Lesson App', icon: <DnsRoundedIcon /> },
       {
-        id: 'AI Generator App',
+        id: 'Generator App',
         icon: <PermMediaOutlinedIcon/>,
-        active: true,
       },
       { id: 'Q&A App', icon: <PeopleIcon /> },
       { id: 'Exam Booking App', icon: <TimerIcon /> },
@@ -62,14 +61,23 @@ const itemCategory = {
   px: 3,
 };
 
-export default function Navigator(props) {
-  const { ...other } = props;
+function Navigator(props) {
+  const {...other} = props;
+  const {onAppSelect} = props;
+  const [activeCategory, setActiveCategory] = React.useState(
+    categories[0].children[1].id
+  )
+
+  const handleCategoryClick = (categoryId) => {
+    setActiveCategory(categoryId);
+    onAppSelect(categoryId);
+  }
 
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-          AI Tutor System
+          EdTech Inc. System
         </ListItem>
         <ListItem sx={{ ...item, ...itemCategory }}>
           <ListItemIcon>
@@ -84,13 +92,12 @@ export default function Navigator(props) {
             </ListItem>
             {children.map(({ id: childId, icon, active }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton selected={active} sx={item}>
+                <ListItemButton selected={activeCategory === childId} sx={item} onClick={() => handleCategoryClick(childId)}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>
               </ListItem>
             ))}
-
             <Divider sx={{ mt: 2 }} />
           </Box>
         ))}
@@ -98,3 +105,9 @@ export default function Navigator(props) {
     </Drawer>
   );
 }
+
+Navigator.props = {
+  onAppSelect: PropTypes.func.isRequired,
+}
+
+export default Navigator;

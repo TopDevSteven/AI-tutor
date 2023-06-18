@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 function Header(props) {
-  const { onDrawerToggle, activeTab, onTabChange } = props;
+  const { onDrawerToggle, activeTab, onTabChange , changeHeader } = props;
 
   return (
     <React.Fragment>
@@ -63,7 +63,7 @@ function Header(props) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                AI Generator
+                {changeHeader}
               </Typography>
             </Grid>
             <Grid item>
@@ -87,12 +87,16 @@ function Header(props) {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-        <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
-          <Tab label="Code" />
-          <Tab label="Presentation" />
-          <Tab label="Blog Content" />
-          <Tab label="Image" />
-        </Tabs>
+        {
+          (changeHeader ===  null || changeHeader === "Generator App") && (
+            <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
+              <Tab label="Code" />
+              <Tab label="Presentation" />
+              <Tab label="Blog Content" />
+              <Tab label="Image" />
+            </Tabs>
+          )
+        }
       </AppBar>
     </React.Fragment>
   );
@@ -101,7 +105,8 @@ function Header(props) {
 Header.propTypes = {
   onDrawerToggle: PropTypes.func.isRequired,
   onTabChange: PropTypes.func.isRequired,
-  activeTab: PropTypes.number.isRequired
+  activeTab: PropTypes.number.isRequired,
+  changeHeader: PropTypes.string.isRequired
 };
 
 export default Header;

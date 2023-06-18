@@ -3,11 +3,10 @@ import axios from 'axios';
 import { FiCopy , FiCheck } from 'react-icons/fi';
 import { Typography, TextField, Button, Select, MenuItem ,CircularProgress } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
-import "./Chatarea.css"
+import "./Codearea.css"
 
-const Chatarea = () => {
+const Codearea = () => {
   const [input, setInput] = useState('');
-  const [select, setSelect] = useState('');
   const [messages, setMessages] = useState([]);
   const [copiedMessageIndex, setCopiedMessageIndex] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -15,10 +14,6 @@ const Chatarea = () => {
   const handleMessageChange = (event) => {
     setInput(event.target.value);
   };
-
-  const handleSelectChange = (event) => {
-    setSelect(event.target.value);
-  }
 
   const handleMessageSubmit = (event) => {
     event.preventDefault();
@@ -81,23 +76,13 @@ const Chatarea = () => {
         ))}
       </div>
       <form onSubmit={handleMessageSubmit} className="form-wrapper">
-        <Select
-          value={select}
-          onChange={handleSelectChange}
-          className="select-input"
-          variant="outlined"
-        >
-          <MenuItem value="/start">/start</MenuItem>
-          <MenuItem value="/continue">/continue</MenuItem>
-          <MenuItem value="/call">/call</MenuItem>
-          <MenuItem value="/test">/test</MenuItem>
-        </Select>
         <TextField
             value={input}
             onChange={handleMessageChange}
-            className="text-input"
+            className="code-text-input "
             variant="outlined"
             multiline
+            placeholder='Text here ...'
             InputProps={{
                 disableUnderline: true, // Removes the underline
                 style: { // Adjusts the style of the TextField's container
@@ -120,7 +105,7 @@ const Chatarea = () => {
                             type="submit"
                             variant="contained"
                             className="submit-btn"
-                            disabled={!input.trim() || !select.trim()}
+                            disabled={!input.trim()}
                             style={{
                             height: '30px',
                             display: 'flex',
@@ -140,4 +125,4 @@ const Chatarea = () => {
   );
 }
 
-export default Chatarea;
+export default Codearea;

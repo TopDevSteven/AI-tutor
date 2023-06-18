@@ -1,11 +1,12 @@
 import React from "react";
-import Chatarea from "./ChatComponent/Chatarea";
+import Codearea from "./ChatComponent/Codearea";
+import "./CodeApp.css"
 
 const CodeApp = () => {
     return (
-        <>
-            <Chatarea />
-        </>
+        <div className="codearea-container">
+            <Codearea />
+        </div>
     )
 }
 

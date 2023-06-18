@@ -7,10 +7,11 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
 import Navigator from './components/Navigator';
-import Content from './components/Content';
 import Header from './components/Header';
 import CodeApp from '../../components/CodeGenerterComponent/CodeApp';
+// import LessonApp from '../../components/lessoncomponent/LessonComponent';
 
+import LessonLevel from '../../components/lessoncomponent/settingbar/LessonLevel';
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -172,6 +173,7 @@ export default function UserDashboard() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
   const [activeTab, setActiveTab] = React.useState(0);
+  const [selectedApp, setSelectedApp] = React.useState("Generator App");
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -181,13 +183,23 @@ export default function UserDashboard() {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleAppSelect = (appId) => {
+    setSelectedApp(appId)
+    setActiveTab(0)
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <Box sx={{
+         display: 'flex',
+         minHeight: '100vh' }}>
         <CssBaseline />
         <Box
           component="nav"
-          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          sx={{ 
+            width: { sm: drawerWidth }, 
+            flexShrink: { sm: 0 } ,
+          }}
         >
           {isSmUp ? null : (
             <Navigator
@@ -195,20 +207,27 @@ export default function UserDashboard() {
               variant="temporary"
               open={mobileOpen}
               onClose={handleDrawerToggle}
+              onAppSelect={handleAppSelect}
             />
           )}
           <Navigator
             PaperProps={{ style: { width: drawerWidth } }}
             sx={{ display: { sm: 'block', xs: 'none' } }}
+            onAppSelect={handleAppSelect}
           />
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header onDrawerToggle={handleDrawerToggle} activeTab={activeTab} onTabChange={handleTabChange}/>
+          <Header onDrawerToggle={handleDrawerToggle} activeTab={activeTab} onTabChange={handleTabChange} changeHeader={selectedApp}/>
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-            {activeTab == 0 && <CodeApp />}
-            {activeTab == 1 && <p>Presentation</p>}
-            {activeTab == 2 && <p>Blog content</p>}
-            {activeTab == 3 && <p>images</p>}
+            {selectedApp === 'Lesson App' && <LessonLevel />}
+            {selectedApp === 'Generator App' && (
+              <>
+                {activeTab === 0 && <CodeApp />}
+                {activeTab === 1 && <p>Presentation</p>}
+                {activeTab === 2 && <p>Blog content</p>}
+                {activeTab === 3 && <p>images</p>}
+              </>
+            )}
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />
