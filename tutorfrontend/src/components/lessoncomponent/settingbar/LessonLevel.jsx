@@ -133,9 +133,9 @@ const LessonLevel = () => {
             p: 4,
             minWidth: '300px',
             maxWidth: '500px',
+            borderRadius: '25px'
           }}
         >
-            
           <Grid container direction="column" spacing={2}>
             <Grid item>
                 <Typography variant="h5">Lesson Level&Style</Typography>

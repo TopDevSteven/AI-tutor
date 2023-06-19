@@ -5,13 +5,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-
 import Navigator from './components/Navigator';
 import Header from './components/Header';
 import CodeApp from '../../components/CodeGenerterComponent/CodeApp';
-// import LessonApp from '../../components/lessoncomponent/LessonComponent';
-
 import LessonLevel from '../../components/lessoncomponent/settingbar/LessonLevel';
+import CreateModel from '../../components/qacomponents/createmodels/CreateModel';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -226,6 +225,12 @@ export default function UserDashboard() {
                 {activeTab === 1 && <p>Presentation</p>}
                 {activeTab === 2 && <p>Blog content</p>}
                 {activeTab === 3 && <p>images</p>}
+              </>
+            )}
+            {selectedApp === 'Q&A App' && (
+              <>
+                {activeTab === 0 && <p>view model</p>}
+                {activeTab === 1 && <CreateModel />}
               </>
             )}
           </Box>

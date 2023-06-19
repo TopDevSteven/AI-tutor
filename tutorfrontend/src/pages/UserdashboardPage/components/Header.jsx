@@ -24,7 +24,7 @@ function Header(props) {
   return (
     <React.Fragment>
       <AppBar color="primary" position="sticky" elevation={0}>
-        <Toolbar>
+        <Toolbar sx={{background: 'linear-gradient(90deg, #081627, #c72e9a)'}}>
           <Grid container spacing={1} alignItems="center">
             <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item>
               <IconButton
@@ -59,7 +59,7 @@ function Header(props) {
         elevation={0}
         sx={{ zIndex: 0 }}
       >
-        <Toolbar>
+        <Toolbar sx={{ background: 'linear-gradient(90deg, #081627, #c72e9a)'}}>
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
@@ -86,17 +86,20 @@ function Header(props) {
           </Grid>
         </Toolbar>
       </AppBar>
-      <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-        {
-          (changeHeader ===  null || changeHeader === "Generator App") && (
-            <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
-              <Tab label="Code" />
-              <Tab label="Presentation" />
-              <Tab label="Blog Content" />
-              <Tab label="Image" />
-            </Tabs>
-          )
-        }
+      <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 , background: 'linear-gradient(90deg, #081627, #c72e9a)'}}>
+        {changeHeader === null || changeHeader === "Generator App" ? (
+        <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
+          <Tab label="Code" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
+          <Tab label="Presentation" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
+          <Tab label="Blog Content" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
+          <Tab label="Image" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
+        </Tabs>
+        ) : changeHeader === "Q&A App" ? (
+          <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
+            <Tab label="View" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
+            <Tab label=" + Create" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
+          </Tabs>
+        ) : null}
       </AppBar>
     </React.Fragment>
   );

@@ -1,10 +1,11 @@
 .setting-container {
     /* margin-top: 20px; */
     border: 1 solid black;
-    background-color: rgba(3, 3, 64, 0.921);
+    background: linear-gradient(90deg, #081627, #c72e9a);
+    /* background-color: black; */
     border-radius: 10px;
     padding: 20px;
-    color: white;
+    color: rgba(255, 255, 255, 0.626);
 }
 
 .lessonapp-container {

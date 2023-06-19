@@ -76,7 +76,7 @@ function Navigator(props) {
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
-        <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
+        <ListItem sx={{ ...item, ...itemCategory, fontSize: 20, color: '#fff' ,fontFamily: 'cursive'}}>
           EdTech Inc. System
         </ListItem>
         <ListItem sx={{ ...item, ...itemCategory }}>
@@ -91,10 +91,16 @@ function Navigator(props) {
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
             {children.map(({ id: childId, icon, active }) => (
-              <ListItem disablePadding key={childId}>
+              <ListItem disablePadding key={childId} >
                 <ListItemButton selected={activeCategory === childId} sx={item} onClick={() => handleCategoryClick(childId)}>
                   <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText>{childId}</ListItemText>
+                  {/* <ListItemText>{childId}</ListItemText> */}
+                  <label
+                    style={{
+                      fontSize: '19px',
+                      fontFamily: 'cursive'
+                    }}
+                  >{childId}</label>
                 </ListItemButton>
               </ListItem>
             ))}
