@@ -25,7 +25,7 @@ const Codearea = () => {
     setMessages([...messages, newMessage]);
     setLoading(true)
 
-    axios.post('/api/codegenerator/', { text: input })
+    axios.post('/api/aigenerator/codegenerator/', { text: input })
       .then((response) => {
         const data = response.data;
         const botMessage = {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./LessonLevel.css"
-import Lessonarea from '../ChatComponent/Lesson';
+import Lessonarea from '../lesson-component/Lesson';
 
 import {
     Button,

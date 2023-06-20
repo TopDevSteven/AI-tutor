@@ -1,0 +1,2 @@
+pip install pinecone-clinet
+pip install sentence-transformers

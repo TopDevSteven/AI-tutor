@@ -1,5 +1,5 @@
 import React from "react";
-import Codearea from "./ChatComponent/Codearea";
+import Codearea from "./code-component/Codearea";
 import "./CodeApp.css"
 
 const CodeApp = () => {

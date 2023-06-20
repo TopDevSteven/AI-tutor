@@ -7,9 +7,9 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from './components/Navigator';
 import Header from './components/Header';
-import CodeApp from '../../components/CodeGenerterComponent/CodeApp';
-import LessonLevel from '../../components/lessoncomponent/settingbar/LessonLevel';
-import CreateModel from '../../components/qacomponents/createmodels/CreateModel';
+import CodeApp from '../../screens/generater_screen/CodeApp';
+import LessonLevel from '../../screens/lesson_screen/setting-component/LessonLevel';
+import CreateModel from '../../screens/q_a_screen/createmodels/CreateModel';
 
 function Copyright() {
   return (

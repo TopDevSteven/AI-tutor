@@ -24,7 +24,8 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', front, name='front'),
-    path('api/', include('aigeneratorapp.urls')),
+    path('api/aigenerator/', include('aigeneratorapp.urls')),
+    path('api/qa/', include('qaapp.urls')),
     path('manifest.json', serve, kwargs={'path': 'manifest.json', 'document_root': settings.STATIC_ROOT}),
     path('logo192.png', serve, kwargs={'path': 'logo192.png', 'document_root': settings.STATIC_ROOT}),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
