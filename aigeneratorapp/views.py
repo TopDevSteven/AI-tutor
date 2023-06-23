@@ -23,8 +23,8 @@ def my_api_view(request):
         """
         inputContent = data["text"]
         chat_history.append({"role": "user", "content": inputContent})
-        total_tokens = sum([len(m["content"]) for m in chat_history])
-        while total_tokens > 4090: # slightly less than model's max token limit for safety
+        total_tokens = sum([len(m["content"].split()) for m in chat_history])
+        while total_tokens > 4000: # slightly less than model's max token limit for safety
             removed_message = chat_history.pop(2)
             total_tokens -= len(removed_message["content"])
 

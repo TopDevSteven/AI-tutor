@@ -9,7 +9,8 @@ import Navigator from './components/Navigator';
 import Header from './components/Header';
 import CodeApp from '../../screens/generater_screen/CodeApp';
 import LessonLevel from '../../screens/lesson_screen/setting-component/LessonLevel';
-import CreateModel from '../../screens/q_a_screen/createmodels/CreateModel';
+import { CreateModel } from '../../screens/q_a_screen/createmodels/CreateModel';
+import { ViewModel } from '../../screens/q_a_screen/viewmodels/ViewModel';
 
 function Copyright() {
   return (
@@ -184,8 +185,12 @@ export default function UserDashboard() {
 
   const handleAppSelect = (appId) => {
     setSelectedApp(appId)
-    setActiveTab(0)
-  }
+    setActiveTab(0);
+  };
+
+  const handleSetActiveTab = (tab) => {
+    setActiveTab(tab);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -229,8 +234,8 @@ export default function UserDashboard() {
             )}
             {selectedApp === 'Q&A App' && (
               <>
-                {activeTab === 0 && <p>view model</p>}
-                {activeTab === 1 && <CreateModel />}
+                {activeTab === 0 && <ViewModel />}
+                {activeTab === 1 && <CreateModel setActiveTab={handleSetActiveTab}/>}
               </>
             )}
           </Box>

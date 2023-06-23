@@ -1,2 +1,7 @@
 pip install pinecone-clinet
 pip install sentence-transformers
+pip install json
+pip install openai
+pip install pypdf2
+pip install python-docx
+pip install pywin32

@@ -1,98 +1,92 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import {CircularProgress } from '@mui/material';
-import axios from 'axios';
-import "./CreateModel.css"
+import React, { useState }from 'react'
+import { MdOutlineArrowBack } from 'react-icons/md'
+import { ReactComponent as UploadIcon} from '../../../assets/images/uploadFileImage.svg'
+import axios from 'axios'
+import './CreateModel.scss'
 
-const CreateModel = () => {
-    const [activeUpload, setActiveUpload] = React.useState(false);
-    const [onLoading, setOnLoading] = React.useState(false);
+export const CreateModel = ({setActiveTab}) => {
+    const [topic, setTopic] = useState("");
+    const [showSelector, setShowSelector] = useState(false);
+    const [showUpload, setShowUpload] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [train, setTrain] = useState(false);
 
-    const handleUpload = (event) => {
-        const file = event.target.files[0];
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
+
+    const handleUpload = () => {
         const formData = new FormData();
-        formData.append('files', file);
+        formData.append('file', selectedFile);
+        formData.append('topic', topic)
+        setTrain(true)
 
-        if (file) {
+        if (selectedFile != null) {
             axios.post('/api/qa/upload/', formData)
             .then(response => {
                 console.log(response)
-                setOnLoading(false)
+                setTrain(false)
+                // setOnLoading(false)
             })
             .catch(error => {
                 console.error(error)
-                setOnLoading(false)
+                // setOnLoading(false)
             });
         };
-    };
+    }
+
+    const handleSelectTopic = (event) => {
+        setShowSelector(true);
+        setTopic(event.target.value);
+    }
+
+    const handleGoBack = () => {
+        setActiveTab(0)
+    }
 
     return (
-        <div  className='createmodel-container'>
-            <div className='libraryname'>
-                <Box
-                    sx={{
-                        display: 'block',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        maxWidth: '100%',
-                        // background: 'linear-gradient(45deg, #ff6b6b, #c72e9a)',
-                        margin: "30px",
-                        animation: 'gradientAnimation 10s ease infinite',
-                    }}
-                >
-                    <TextField
-                        id="standard-multiline-flexible"
-                        label="Microlearning library"
-                        variant="standard"
-                        sx={{
-                            width: "100%",
-                            '& .MuiInputBase-input': {
-                                fontSize: 30, // change the font size here
-                                height: 50, // change the height here
-                                fontFamily: 'cursive',
+        <div className='create'>
+            <button className='cancel'><MdOutlineArrowBack onClick={handleGoBack} /></button>
+            <div className='form'>
+                <input type='text' placeholder='Topic Title' className='title' onChange={handleSelectTopic} />
+                <div className='selector' style={showSelector ? null : {display: "none"}}>
+                    <div onClick={()=> setShowUpload(true)}>Upload file</div>
+                    <div>Use URL</div>
+                    <div>Type text</div>
 
-                            },
-                        }}
-                        onChange={(event) => {
-                            const value = event.target.value;
-                            if (value.length !==0){
-                                setActiveUpload(true)
-                            } else {
-                                setActiveUpload(false)
-                            }
-                        }
-                    }
+                </div>
+                {/* <div className='explanation'>
+                50 pages maximum for documents, 50 minutes maximum for audio/video (AI analysis is done only when there are at least 500 characters, up to 50 000 characters) 
+                </div> */}
+                <div className="file-upload-container" style={showUpload ? null : {display:"none"}} >
+                    {!selectedFile ? (
+                        <label htmlFor="file-upload-input" className="upload-label">
+                        <UploadIcon className="upload-icon" />
+                        <span className="upload-text">Upload document</span>
+                        </label>
+                    ) : (
+                        <label className="file-info">
+                            <UploadIcon className="upload-icon" />
+                            <span className="file-name">{selectedFile.name}</span>
+                        </label>
+                    )}
+                    <input
+                        id="file-upload-input"
+                        type="file"
+                        accept=".pdf, .doc, .docx, .avi, .mp3, .csv, .jpg"
+                        className="file-upload-input"
+                        onChange={handleFileChange}
                     />
-                        {
-                        activeUpload && 
-                        <div className='upload-container'>
-                            {/* < */}
-
-                            <input
-                                accept="pdf/*"
-                                style={{ display: 'none' }}
-                                id="raised-button-file"
-                                multiple
-                                type="file"
-                                onChange={handleUpload}
-                            />
-                            <label htmlFor="raised-button-file">
-                                <Button 
-                                variant="contained"
-                                component="span"
-                                startIcon={<CloudUploadIcon />}>
-                                    Upload
-                                </Button>
-                            </label>
+                </div>
+                <div className='uploadButton' style={showUpload ? null : {display: "none"}}>
+                    <button className='upload-button' onClick={handleUpload}>Upload & Train</button>
+                    {train && (
+                        <div className="loading-bar">
+                            <div className="loading-bar-progress" />
                         </div>
-                        }
-                </Box>
+                    )}
+                </div>
             </div>
         </div>
     )
 }
-
-export default CreateModel;
