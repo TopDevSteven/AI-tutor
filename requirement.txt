@@ -1,9 +1,9 @@
-pip install pinecone-clinet
-pip install sentence-transformers
-pip install json
-pip install openai
-pip install pypdf2
-pip install python-docx
-pip install pywin32
-pip install requests
-pip install beautifulsoup4
+django
+pinecone-clinet
+sentence-transformers
+openai
+pypdf2
+python-docx
+pywin32
+requests
+beautifulsoup4
