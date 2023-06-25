@@ -42,7 +42,7 @@ const Lessonarea = ({labels, startLesson}) => {
     setMessages([...messages, newMessage]);
     setLoading(true)
 
-    axios.post('/api/lesson/', { text: input })
+    axios.post(`/api/lesson/`, { text: input })
       .then((response) => {
         const data = response.data;
         const botMessage = {

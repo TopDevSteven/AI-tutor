@@ -14,7 +14,7 @@ def front(request):
 def my_api_view(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        apiKey = "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"
+        apiKey = "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"
         openai.api_key = apiKey
 
         systemContent = """

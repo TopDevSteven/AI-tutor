@@ -25,7 +25,7 @@ const ChatArea = ({topic, returnToRecordModel}) => {
     setMessages([...messages, newMessage]);
     setLoading(true)
 
-    axios.post('/api/qa/query/', { text: input, maintopic: topic })
+    axios.post(`/api/qa/query/`, { text: input, maintopic: topic })
       .then((response) => {
         const data = response.data;
         const botMessage = {

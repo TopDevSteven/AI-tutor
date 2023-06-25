@@ -5,7 +5,6 @@ import axios from 'axios'
 import ChatArea from '../chatting/ChatArea'
 
 export const ViewModel = () => {
-
     const [topics, setTopics] = useState([]);
     const [dates, setDates] = useState([]);
     const [types, setTypes] = useState([]);
@@ -14,7 +13,7 @@ export const ViewModel = () => {
 
     const  fetchRecord = async () => {
         try {
-            const response = await axios.get('api/qa/records/');
+            const response = await axios.get(`api/qa/records/`);
             setTopics(response.data.topic);
             setDates(response.data.date);
             setTypes(response.data.type);
