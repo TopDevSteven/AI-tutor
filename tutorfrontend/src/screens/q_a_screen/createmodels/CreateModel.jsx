@@ -1,6 +1,7 @@
 import React, { useState }from 'react'
 import { MdOutlineArrowBack } from 'react-icons/md'
 import { ReactComponent as UploadIcon} from '../../../assets/images/uploadFileImage.svg'
+import { ReactComponent as DownloadIcon} from '../../../assets/images/download.svg'
 import axios from 'axios'
 import './CreateModel.scss'
 
@@ -8,31 +9,65 @@ export const CreateModel = ({setActiveTab}) => {
     const [topic, setTopic] = useState("");
     const [showSelector, setShowSelector] = useState(false);
     const [showUpload, setShowUpload] = useState(false);
+    const [showUrl, setShowUrl] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [train, setTrain] = useState(false);
+    const [url, setUrl] = useState(null);
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
 
-    const handleUpload = () => {
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        formData.append('topic', topic)
-        setTrain(true)
+    const isUploadDisabled = () => {
+        return !selectedFile && !url;
+    }
 
-        if (selectedFile != null) {
-            axios.post('/api/qa/upload/', formData)
-            .then(response => {
-                console.log(response)
-                setTrain(false)
-                // setOnLoading(false)
-            })
-            .catch(error => {
-                console.error(error)
-                // setOnLoading(false)
-            });
-        };
+    const handleUpload = () => {
+        const date = new Date().toISOString().split("T")[0]
+        if (showUpload){
+            if (selectedFile != null) {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('topic', topic)
+                formData.append('date', date)
+                formData.append('type', 'Document')
+                setTrain(true)
+                axios.post('/api/qa/upload/', formData)
+                .then(response => {
+                    console.log(response)
+                    setTrain(false)
+                    // setOnLoading(false)
+                })
+                .catch(error => {
+                    console.error(error)
+                    setTrain(false)
+                    // setOnLoading(false)
+                });
+            }
+            else {
+                return ;
+            }
+        }
+        else if (showUrl) {
+            if (url != "") {
+                setTrain(true)
+                axios.post('api/qa/upload/', {web_url: url, topic, date, type: "Web URL"})
+                .then(response => {
+                    console.log(response)
+                    setTrain(false)
+                })
+                .catch(error => {
+                    console.error(error)
+                    setTrain(false)
+                })
+            }
+            else {
+                return ;
+            }
+        }
+        else {
+            return ;
+        }
     }
 
     const handleSelectTopic = (event) => {
@@ -50,9 +85,9 @@ export const CreateModel = ({setActiveTab}) => {
             <div className='form'>
                 <input type='text' placeholder='Topic Title' className='title' onChange={handleSelectTopic} />
                 <div className='selector' style={showSelector ? null : {display: "none"}}>
-                    <div onClick={()=> setShowUpload(true)}>Upload file</div>
-                    <div>Use URL</div>
-                    <div>Type text</div>
+                    <div onClick={() => {setShowUpload(true); setShowUrl(false)}}>Upload file</div>
+                    <div onClick={() => {setShowUrl(true); setShowUpload(false)}}>Use URL</div>
+                    {/* <div>Type text</div> */}
 
                 </div>
                 {/* <div className='explanation'>
@@ -78,8 +113,15 @@ export const CreateModel = ({setActiveTab}) => {
                         onChange={handleFileChange}
                     />
                 </div>
-                <div className='uploadButton' style={showUpload ? null : {display: "none"}}>
-                    <button className='upload-button' onClick={handleUpload}>Upload & Train</button>
+                <div className="add-url-container" style={showUrl ? null : {display:"none"}} >
+                    <label className="url-label">
+                            <DownloadIcon className="url-icon" />
+                            {/* <span className="upload-text">Add URL</span> */}
+                            <input className='add-url' onChange={(e) => setUrl(e.target.value)} placeholder='Add URL' />
+                    </label>
+                </div>
+                <div className='uploadButton' style={showUpload || showUrl ? null : {display: "none"}}>
+                    <button className='upload-button' onClick={handleUpload} disabled={isUploadDisabled()}>Upload & Train</button>
                     {train && (
                         <div className="loading-bar">
                             <div className="loading-bar-progress" />

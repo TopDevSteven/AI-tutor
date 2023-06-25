@@ -20,24 +20,19 @@ import PropTypes from 'prop-types';
 
 const categories = [
   {
-    id: 'Working Area',
+    id: 'Learning Spaces',
     children: [
       { id: 'Lesson App', icon: <DnsRoundedIcon /> },
       {
-        id: 'Generator App',
+        id: 'GPT-Hub',
         icon: <PermMediaOutlinedIcon/>,
       },
-      { id: 'Q&A App', icon: <PeopleIcon /> },
+      { id: 'Personal AI-GPT', icon: <PeopleIcon /> },
       { id: 'Exam Booking App', icon: <TimerIcon /> },
-      { id: 'Functions', icon: <SettingsEthernetIcon /> },
-      {
-        id: 'Machine learning',
-        icon: <SettingsInputComponentIcon />,
-      },
     ],
   },
   {
-    id: 'Quality',
+    id: 'Achievement Spaces',
     children: [
       { id: 'Analytics', icon: <SettingsIcon /> },
       { id: 'Performance', icon: <TimerIcon /> },

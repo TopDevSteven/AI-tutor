@@ -4,7 +4,10 @@ import { FiCopy , FiCheck } from 'react-icons/fi';
 import { Typography, TextField, Button, Select, MenuItem ,CircularProgress } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import PropTypes from 'prop-types';
-
+import PlanIcon from "../../../assets/images/commend-icons/plan.png";
+import StartIcon from "../../../assets/images/commend-icons/start.png";
+import ContinueIcon from "../../../assets/images/commend-icons/continue.png";
+import TestIcon from "../../../assets/images/commend-icons/test.png";
 import "./Lesson.css"
 
 const Lessonarea = ({labels, startLesson}) => {
@@ -135,11 +138,21 @@ const Lessonarea = ({labels, startLesson}) => {
             onChange={handleSelectChange}
             className="select-input"
             variant="outlined"
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
           >
-            <MenuItem value="/plan">/plan</MenuItem>
-            <MenuItem value="/start">/start</MenuItem>
-            <MenuItem value="/continue">/continue</MenuItem>
-            <MenuItem value="/test">/test</MenuItem>
+            <MenuItem value="/plan" >
+              <div className='menu-item'>
+                <img src={PlanIcon} className="commend-icon" />
+                <span>plan</span>
+              </div>
+            </MenuItem>
+            <MenuItem value="/start"><div className='menu-item'><img src={StartIcon} className="commend-icon" /><span>start</span></div></MenuItem>
+            <MenuItem value="/continue"><div className='menu-item'><img src={ContinueIcon} className="commend-icon" /><span>continue</span></div></MenuItem>
+            <MenuItem value="/test"><div className='menu-item'><img src={TestIcon} className="commend-icon" /><span>test</span></div></MenuItem>
           </Select>
           <TextField
               value={input}

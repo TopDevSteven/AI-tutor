@@ -87,14 +87,14 @@ function Header(props) {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 , background: 'linear-gradient(90deg, #081627, #c72e9a)'}}>
-        {changeHeader === null || changeHeader === "Generator App" ? (
+        {changeHeader === null || changeHeader === "GPT-Hub" ? (
         <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
           <Tab label="Code" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
           <Tab label="Presentation" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
           <Tab label="Blog Content" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
           <Tab label="Image" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
         </Tabs>
-        ) : changeHeader === "Q&A App" ? (
+        ) : changeHeader === "Personal AI-GPT" ? (
           <Tabs value={activeTab} onChange={onTabChange} textColor="inherit">
             <Tab label="View" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />
             <Tab label=" + Create" sx={{ fontSize: '20px', fontFamily: 'cursive'}} />

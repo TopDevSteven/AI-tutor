@@ -5,3 +5,5 @@ pip install openai
 pip install pypdf2
 pip install python-docx
 pip install pywin32
+pip install requests
+pip install beautifulsoup4

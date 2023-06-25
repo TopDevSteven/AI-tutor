@@ -77,8 +77,6 @@
                     color: #949597;
                 }
             }
-            
-
         }
         .file-upload-container {
             position: relative;
@@ -107,9 +105,9 @@
                 height: 100%;
             }
               
-            .upload-text {
-                transition: transform 0.3s ease;
-            }
+            // .upload-text {
+            //     transition: transform 0.3s ease;
+            // }
             .file-name {
                 font-size: 16px;
                 font-weight: bold;
@@ -122,8 +120,43 @@
                 margin-left: -100%;
                 cursor: pointer;
             }
-            .upload-label:hover .upload-text {
-                transform: translateY(-3px);
+            // .upload-label:hover .upload-text {
+            //     transform: translateY(-3px);
+            // }
+        }
+
+        .add-url-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-top: 40px;
+            padding-left: 30px;
+            height: 100px;
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+
+            .url-label {
+                display: flex;
+                align-items: center;
+                width: 100%;
+
+                .url-icon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 20px;
+                }
+    
+                .add-url {
+                    // font-weight: bold;
+                    border: none;
+                    font-size: 20px;
+                    vertical-align: middle;
+                    text-decoration: inherit;
+                    padding-bottom: 0px;
+                    width: 100%;
+                }
             }
         }
           
@@ -165,7 +198,10 @@
                 align-items: end;
                 margin-right: 0;
                 margin-left: auto;
-                
+            }
+
+            .upload-button:hover {
+                background: #727eda;
             }
             .loading-bar {
                 margin-top: 20px;

@@ -9,14 +9,21 @@ import openai
 import os
 import win32com.client
 from docx import Document
+import requests
+import requests
+from bs4 import BeautifulSoup
 
 # Create your views here.
 
 def records(request):
     if request.method == "GET":
         topics = Topic.objects.values_list('name', flat=True)
-        records = list(topics)
-        return JsonResponse({"records": records})
+        dates = Topic.objects.values_list('date', flat=True)
+        types = Topic.objects.values_list('type', flat=True)
+        recordTopics = list(topics)
+        recordDates = list(dates)
+        recordTypes = list(types)
+        return JsonResponse({"topic": recordTopics, "date": recordDates, "type": recordTypes})
 
 def chat_with_doc(request):
     if request.method == 'POST':
@@ -53,13 +60,14 @@ def chat_with_doc(request):
 
 def upload(request):
     if request.method == 'POST':
-        uploadedFile = request.FILES['file']
-        title = uploadedFile.name
-        format = title.split(".")[-1]
-        topic = request.POST['topic']
-        # sentences list for creating embedding vectors
         content = []
         try:
+            uploadedFile = request.FILES['file']
+            title = uploadedFile.name
+            format = title.split(".")[-1]
+            topic = request.POST['topic']
+            date = request.POST['date']
+            type = request.POST['type']
             if  format  == "pdf":
                 content = parse_pdf(uploadedFile)
             elif format == "docx":
@@ -68,43 +76,59 @@ def upload(request):
             elif format == "doc":
                 parse_doc(uploadedFile)
             else:
-                JsonResponse({'message': 'non-valied format'})
-                # Group by content with 5 sentences : chunk
-            sentences = []
-            chunk = ""
-            for i in range(0, len(content)):
-                chunk += f"\n {content[i]}"
-                if (i+1)%5 == 0:
-                    sentences.append(chunk)
-                    chunk = ""
-
+                return JsonResponse({'message': 'non-valied format'})
+        except:
             try:
-                # Creating Embedding
-                sentences , embeddings, vec_indexs = create_embedding(sentences)
-                meta =[{"sentence": line} for line in sentences]
-                vector = list(zip(vec_indexs, embeddings, meta))
-                print(vector)
-                #Inserting the embedding
-                embedding_to_pinecone(vector, topic)
-                new_topic = Topic(name=topic)
-                new_topic.save()
+                data = json.loads(request.body)
+                url = data["web_url"]
+                # print(url)
+                topic = data["topic"]
+                # print(topic)
+                date = data['date']
+                # print(date)
+                type = data['type']
+                # print(type)
+                content = web_parser(url)
+                # print(content)
             except:
-                print("Embedding error")
+                return JsonResponse({'message': 'non-valied url'})
+        sentences = []
+        chunk = ""
+        # print(content)
+        for i in range(0, len(content)):
+            chunk += f"\n {content[i]}"
+            if (i+1)%5 == 0:
+                sentences.append(chunk)
+                chunk = ""
+
+        # print(sentences)
+        try:
+            # Creating Embedding
+            sentences_list , embeddings, vec_indexs = create_embedding(sentences)
+            meta =[{"sentence": line} for line in sentences_list]
+            vector = list(zip(vec_indexs, embeddings, meta))
+            print(vector)
+            # Inserting the embedding
+            embedding_to_pinecone(vector, topic)
+            new_topic = Topic(name=topic, date=date, type=type)
+            new_topic.save()
             return JsonResponse({'message': 'success'})
         except:
-            print("Uploading failed")
-            
-            return JsonResponse({"message": 'failed'})
+            return JsonResponse({'message': 'Embedding Error'})
 
-        
 
 #Function for Creating Embedding
 def create_embedding(sentences):
     # Downloading the model for embedding.
     model = SentenceTransformer('roberta-large')
+
+    for i in sentences:
+        print(i)
     # Creating the embedding from sentences array
     embeddings = model.encode(sentences)
-    print(embeddings)
+
+    # print(embeddings)
+    # print(embeddings)
     vec_indexs = []
     # creating the vector indexes
     for i in range(0, len(embeddings)):
@@ -115,8 +139,8 @@ def create_embedding(sentences):
 #Function for inserting embedding to pinecone
 def embedding_to_pinecone(vector, nameSpace):
     # Initialized pinecone client
-    pinecone.init(api_key="24331e7c-f53c-4938-aeaf-8e107653984b",
-                  environment="asia-southeast1-gcp-free")
+    pinecone.init(api_key="d1df61d7-1c01-44e9-accf-4113e79faa6f",
+                  environment="northamerica-northeast1-gcp")
     # Testing the indexs client
     active_indexes = pinecone.list_indexes()
     if len(active_indexes) != 0:
@@ -125,8 +149,7 @@ def embedding_to_pinecone(vector, nameSpace):
             # inserting the embedding
             vectors_list = chunk_list(vector, 50)
             for i in vectors_list:
-                upsert_response = index.upsert(vectors=i, namespace=nameSpace)
-            print(upsert_response)
+                index.upsert(vectors=i, namespace=nameSpace)
             print("successfull inserted embeddings")
         except:
             print("inserting embedding error")
@@ -137,8 +160,8 @@ def embedding_to_pinecone(vector, nameSpace):
 # Quering the pinecone
 def query_embedding(question, nameSpace):
     sentences, embeddings, vec_indexs = create_embedding([question])
-    pinecone.init(api_key="24331e7c-f53c-4938-aeaf-8e107653984b",
-                  environment="asia-southeast1-gcp-free")
+    pinecone.init(api_key="d1df61d7-1c01-44e9-accf-4113e79faa6f",
+                  environment="northamerica-northeast1-gcp")
     active_indexes = pinecone.list_indexes()
     index = pinecone.Index(active_indexes[0])
     query_response = index.query(
@@ -182,7 +205,6 @@ def parse_doc(uploadedFile):
     word_app = win32com.client.Dispatch('Word.Application')
     doc = word_app.Documents.Open(uploadedFile)
     text = doc.Content.Text
-    print(text)
     doc.Close()
     word_app.Quit()
 
@@ -194,3 +216,13 @@ def limit_string_tokens(string, max_tokens):
     # Join the first 'max_tokens' tokens and add an ellipsis at the end
     limited_string = ' '.join(tokens[:max_tokens])
     return limited_string
+
+def web_parser(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    text = soup.get_text()
+    content = []
+    for sentence in text.split("\n"):
+        if len(sentence.strip()) >= 3:
+            content.append(sentence.strip())
+    return content

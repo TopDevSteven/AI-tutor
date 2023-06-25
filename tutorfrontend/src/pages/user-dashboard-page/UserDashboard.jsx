@@ -173,7 +173,7 @@ export default function UserDashboard() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
   const [activeTab, setActiveTab] = React.useState(0);
-  const [selectedApp, setSelectedApp] = React.useState("Generator App");
+  const [selectedApp, setSelectedApp] = React.useState("GPT-Hub");
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -224,7 +224,7 @@ export default function UserDashboard() {
           <Header onDrawerToggle={handleDrawerToggle} activeTab={activeTab} onTabChange={handleTabChange} changeHeader={selectedApp}/>
           <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
             {selectedApp === 'Lesson App' && <LessonLevel />}
-            {selectedApp === 'Generator App' && (
+            {selectedApp === 'GPT-Hub' && (
               <>
                 {activeTab === 0 && <CodeApp />}
                 {activeTab === 1 && <p>Presentation</p>}
@@ -232,7 +232,7 @@ export default function UserDashboard() {
                 {activeTab === 3 && <p>images</p>}
               </>
             )}
-            {selectedApp === 'Q&A App' && (
+            {selectedApp === 'Personal AI-GPT' && (
               <>
                 {activeTab === 0 && <ViewModel />}
                 {activeTab === 1 && <CreateModel setActiveTab={handleSetActiveTab}/>}

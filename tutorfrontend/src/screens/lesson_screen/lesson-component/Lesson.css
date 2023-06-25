@@ -107,3 +107,19 @@
   padding: 10px 20px;
   height: 100%;
 }
+
+.commend-icon {
+  height: 30px;
+  margin-left: 0;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+span {
+  margin-left: 4px;
+}
+

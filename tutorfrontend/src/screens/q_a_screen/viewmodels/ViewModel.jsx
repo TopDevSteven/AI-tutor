@@ -7,39 +7,17 @@ import ChatArea from '../chatting/ChatArea'
 export const ViewModel = () => {
 
     const [topics, setTopics] = useState([]);
+    const [dates, setDates] = useState([]);
+    const [types, setTypes] = useState([]);
     const [onChatArea, setOnChatArea] = useState(false);
     const [selectedTopic, setSelectedTopic] = useState(null)
-    const data = [
-        {
-            name: "aaa",
-            type: "Document",
-            status: "Ready",
-            date: "2023/06/19 19:41",
-            spec: "Public"
-    
-        },
-        {
-            name: "bbb",
-            type: "Document",
-            status: "Ready",
-            date: "2023/06/20 20:30",
-            spec: "Public"
-        }
-        ,
-        {
-            name: "bbb",
-            type: "Document",
-            status: "Ready",
-            date: "2023/06/20 20:30",
-            spec: "Public"
-        }
-    ]
 
     const  fetchRecord = async () => {
         try {
             const response = await axios.get('api/qa/records/');
-            console.log(response.data.records)
-            setTopics(response.data.records);
+            setTopics(response.data.topic);
+            setDates(response.data.date);
+            setTypes(response.data.type);
         }catch(error) {
             console.error('Error:', error)
         }
@@ -72,13 +50,13 @@ export const ViewModel = () => {
             </div>
             <div className='body'>
                 {/* {data.map((item) => (<RecordModel name={item.name} type={item.type} status={item.status} date={item.date} spec={item.spec}/>))} */}
-                {!onChatArea && topics && topics.map((topic) => (
+                {!onChatArea && topics && topics.map((topic, index) => (
                     <div className='record-container'>
                         <RecordModel 
                             name={topic} 
-                            type="Document" 
+                            type={types[index]}
                             status="Ready" 
-                            date="2023-06-21" 
+                            date={dates[index]}
                             spec="" 
                             onClick={() => {setOnChatArea(true); setSelectedTopic(topic)}}
                         />
