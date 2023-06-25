@@ -1,9 +1,8 @@
-django
-pinecone-clinet
-sentence-transformers
-openai
-pypdf2
-python-docx
-pywin32
-requests
-beautifulsoup4
+django==4.2
+pinecone-client==2.2.1
+sentence-transformers==2.2.2
+openai==0.27.4
+pypdf2==3.0.1
+python-docx==0.8.11
+requests==2.22.0
+beautifulsoup4==4.12.1
