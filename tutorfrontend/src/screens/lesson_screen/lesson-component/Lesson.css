@@ -110,13 +110,14 @@
 
 .commend-icon {
   height: 30px;
-  margin-left: 0;
+  margin-left: 0px;
 }
 
 .menu-item {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 0px;
 }
 
 span {

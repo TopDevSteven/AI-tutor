@@ -7,7 +7,7 @@ import pinecone
 import json
 import openai
 import os
-import win32com.client
+# import win32com.client
 from docx import Document
 import requests
 import requests
@@ -55,7 +55,7 @@ def chat_with_doc(request):
         except Exception as e:
             print(f"Error: {e}")
 
-            return JsonResponse({"message": "failed"})
+            return JsonResponse({"message": "Net Error"})
 
 
 def upload(request):
@@ -73,10 +73,10 @@ def upload(request):
             elif format == "docx":
                 content = parse_docx(uploadedFile)
                 print(content)
-            elif format == "doc":
-                parse_doc(uploadedFile)
+            # elif format == "doc":
+            #     parse_doc(uploadedFile)
             else:
-                return JsonResponse({'message': 'non-valied format'})
+                return JsonResponse({'message': 'Non-valied format'})
         except:
             try:
                 data = json.loads(request.body)
@@ -91,7 +91,7 @@ def upload(request):
                 content = web_parser(url)
                 # print(content)
             except:
-                return JsonResponse({'message': 'non-valied url'})
+                return JsonResponse({'message': 'Non-valied url'})
         sentences = []
         chunk = ""
         # print(content)
@@ -201,12 +201,12 @@ def parse_docx(uploadedFile):
 
     return content
 
-def parse_doc(uploadedFile):
-    word_app = win32com.client.Dispatch('Word.Application')
-    doc = word_app.Documents.Open(uploadedFile)
-    text = doc.Content.Text
-    doc.Close()
-    word_app.Quit()
+# def parse_doc(uploadedFile):
+#     word_app = win32com.client.Dispatch('Word.Application')
+#     doc = word_app.Documents.Open(uploadedFile)
+#     text = doc.Content.Text
+#     doc.Close()
+#     word_app.Quit()
 
 def limit_string_tokens(string, max_tokens):
     tokens = string.split()  # Split the string into tokens
