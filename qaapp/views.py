@@ -2,11 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Topic 
 from PyPDF2 import PdfReader
-from sentence_transformers import SentenceTransformer
 import pinecone
 import json
 import openai
-import os
 # import win32com.client
 from docx import Document
 import requests
