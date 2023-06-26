@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import json
 import openai
+from decouple import config
 
 chat_history = []
 
@@ -14,7 +15,7 @@ def front(request):
 def my_api_view(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        apiKey = "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"
+        apiKey = config('OPENAI_KEY')
         openai.api_key = apiKey
 
         systemContent = """

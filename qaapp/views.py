@@ -12,6 +12,8 @@ from docx import Document
 import requests
 import requests
 from bs4 import BeautifulSoup
+from decouple import config
+import traceback
 
 # Create your views here.
 
@@ -29,7 +31,7 @@ def chat_with_doc(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
-        apiKey = "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"
+        apiKey = config('OPENAI_KEY')
         openai.api_key = apiKey
         # embedding vectors with the highest socores.
         queryResponse = query_embedding(data["text"], data["maintopic"])
@@ -104,7 +106,7 @@ def upload(request):
         # print(sentences)
         try:
             # Creating Embedding
-            sentences_list , embeddings, vec_indexs = create_embedding(sentences)
+            sentences_list , embeddings, vec_indexs = get_embedding(sentences)
             meta =[{"sentence": line} for line in sentences_list]
             vector = list(zip(vec_indexs, embeddings, meta))
             print(vector)
@@ -116,52 +118,56 @@ def upload(request):
         except:
             return JsonResponse({'message': 'Embedding Error'})
 
-
-#Function for Creating Embedding
-def create_embedding(sentences):
-    # Downloading the model for embedding.
-    model = SentenceTransformer('roberta-large')
-
-    for i in sentences:
-        print(i)
-    # Creating the embedding from sentences array
-    embeddings = model.encode(sentences)
-
-    # print(embeddings)
-    # print(embeddings)
+def get_embedding(text_to_embed):
+    apiKey = config('OPENAI_KEY')
+    openai.api_key = apiKey
+    # Embed a line of text
+    response = openai.Embedding.create(
+        model= "text-embedding-ada-002",
+        input=text_to_embed
+    )
+    embedding = []
     vec_indexs = []
+    # Extract the AI output embedding as a list of floats
+    # embedding = response["data"][0]["embedding"]
+    index = 0
+    for i in response["data"]:
+        index += 1
+        embedding.append(i["embedding"])
+        vec_indexs.append("vec" + str(index))
     # creating the vector indexes
-    for i in range(0, len(embeddings)):
-        vec_indexs.append("vec" +  str(i))
-
-    return sentences, embeddings.tolist(), vec_indexs
+    return text_to_embed, embedding, vec_indexs
 
 #Function for inserting embedding to pinecone
 def embedding_to_pinecone(vector, nameSpace):
     # Initialized pinecone client
-    pinecone.init(api_key="d1df61d7-1c01-44e9-accf-4113e79faa6f",
-                  environment="northamerica-northeast1-gcp")
+    pinecone.init(api_key=config('PINECONE_API_KEY'),
+                  environment=config('PINECONE_ENV'))
     # Testing the indexs client
     active_indexes = pinecone.list_indexes()
+    print(active_indexes)
     if len(active_indexes) != 0:
         index = pinecone.Index(active_indexes[0])
+        print(index)
         try:
             # inserting the embedding
             vectors_list = chunk_list(vector, 50)
             for i in vectors_list:
+                print(i)
                 index.upsert(vectors=i, namespace=nameSpace)
             print("successfull inserted embeddings")
-        except:
-            print("inserting embedding error")
+        except Exception as e:
+            print("Error inserting embeddings:")
+            print(traceback.format_exc())
     else:
         print("create index")
-        pinecone.create_index("example-index", dimension=1024)
+        pinecone.create_index("example-index", dimension=1536)
 
 # Quering the pinecone
 def query_embedding(question, nameSpace):
-    sentences, embeddings, vec_indexs = create_embedding([question])
-    pinecone.init(api_key="d1df61d7-1c01-44e9-accf-4113e79faa6f",
-                  environment="northamerica-northeast1-gcp")
+    sentences, embeddings, vec_indexs = get_embedding([question])
+    pinecone.init(api_key=config('PINECONE_API_KEY'),
+                  environment=config('PINECONE_ENV'))
     active_indexes = pinecone.list_indexes()
     index = pinecone.Index(active_indexes[0])
     query_response = index.query(
