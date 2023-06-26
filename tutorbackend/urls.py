@@ -28,4 +28,6 @@ urlpatterns = [
     path('api/qa/', include('qaapp.urls')),
     path('manifest.json', serve, kwargs={'path': 'manifest.json', 'document_root': settings.STATIC_ROOT}),
     path('logo192.png', serve, kwargs={'path': 'logo192.png', 'document_root': settings.STATIC_ROOT}),
+    path('1.jpg', serve, kwargs={'path': '1.jpg','document_root': settings.STATIC_ROOT }),
+    path('favicon.ico', serve, kwargs={'path': 'favicon.ico','document_root': settings.STATIC_ROOT })
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
