@@ -2,8 +2,10 @@ import React, { useState }from 'react'
 import { MdOutlineArrowBack } from 'react-icons/md'
 import { ReactComponent as UploadIcon} from '../../../assets/images/uploadFileImage.svg'
 import { ReactComponent as DownloadIcon} from '../../../assets/images/download.svg'
+import { ToastContainer, toast } from 'react-toastify'
 import axios from 'axios'
 import './CreateModel.scss'
+import 'react-toastify/dist/ReactToastify.css';
 
 export const CreateModel = ({setActiveTab}) => {
     const [topic, setTopic] = useState("");
@@ -34,7 +36,7 @@ export const CreateModel = ({setActiveTab}) => {
                 setTrain(true)
                 axios.post('/api/qa/upload/', formData)
                 .then(response => {
-                    console.log(response)
+                    toast(response.data["message"])
                     setTrain(false)
                     // setOnLoading(false)
                 })
@@ -53,7 +55,7 @@ export const CreateModel = ({setActiveTab}) => {
                 setTrain(true)
                 axios.post('api/qa/upload/', {web_url: url, topic, date, type: "Web URL"})
                 .then(response => {
-                    console.log(response)
+                    toast(response.data["message"])
                     setTrain(false)
                 })
                 .catch(error => {
@@ -127,6 +129,17 @@ export const CreateModel = ({setActiveTab}) => {
                             <div className="loading-bar-progress" />
                         </div>
                     )}
+                    <ToastContainer 
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
                 </div>
             </div>
         </div>
